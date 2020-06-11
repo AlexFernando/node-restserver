@@ -7,8 +7,9 @@ const app = express()
 
 app.use(express.urlencoded({ extended: true })) // serializar url, enviar la info de mis request a mi server 
 
-app.use(require('./routes/usuario'))
- 
+//Configuracion global de rutas
+app.use(require('./routes/index'))
+
 mongoose.connect(process.env.URLDB, (err, res) => {
 
     if (err) throw err;
