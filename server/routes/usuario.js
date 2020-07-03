@@ -1,11 +1,10 @@
 const express = require('express');
 
 const bcrypt = require('bcrypt');
-const _ = require('underscore')
+const _ = require('underscore');
 
 const Usuario = require('../models/usuario')
 const { verificaToken , verificaAdminRole} = require('../middlewares/autenticacion')
-
 
 const app = express()
 
@@ -17,7 +16,7 @@ app.get('/usuario', verificaToken, (req, res) => {
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({estado: true}, 'nombre email role estado google img')
+    Usuario.find({estado: true}, 'nombre email role estado google img')// solo de estado true, quiero estos campos
             .skip(desde)
             .limit(limite)
             .exec( (err, usuarios) => {
@@ -49,7 +48,7 @@ app.post('/usuario', [verificaToken, verificaAdminRole], function (req, res) {
         role: body.role,
     })
 
-    usuario.save( (err, usuarioDB) => {
+    usuario.save( (err, usuarioDB) => {// Por que un usuarioDB? Al parecer usuarioDB tiene la data de usuario
 
         if( err ) {
             return res.status(400).json({
@@ -69,11 +68,12 @@ app.post('/usuario', [verificaToken, verificaAdminRole], function (req, res) {
 app.put('/usuario/:id', [verificaToken, verificaAdminRole], function (req, res) {
 
     let id = req.params.id; // este params.id es el id de la url, tiene que ser el mismo nombre
-
+//pick es funcion de la liberia underscore.js, pick filtra solo los campos que quiero, 2 param. son las prop. validas
     let body = _.pick( req.body, ['nombre', 'email', 'img', 'role', 'estado'] );
 
     Usuario.findByIdAndUpdate( id, body, {new: true, runValidators: true}, (err, usuarioDB) => {
-        
+        //new te regresa el nuevo registrado acutalizado en postman
+        //run validators corre todas las validaciones definidas en el esquemas
         if( err ) {
             return res.status(400).json({
                 ok: false,

@@ -41,7 +41,7 @@ let usuarioSchema = new Schema({
     } // Boolean
 });
 
-usuarioSchema.methods.toJSON = function() {
+usuarioSchema.methods.toJSON = function() { // porque esta funcion
 
     let user = this;
     let userObject = user.toObject();
@@ -51,6 +51,6 @@ usuarioSchema.methods.toJSON = function() {
 
 }
 
-usuarioSchema.plugin( uniqueValidator, { message: '{PATH} debe ser único' } )
+usuarioSchema.plugin( uniqueValidator, { message: '{PATH} debe ser único' } )// porque esta funcion
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
